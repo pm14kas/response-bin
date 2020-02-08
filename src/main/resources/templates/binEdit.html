@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorate="~{layouts/layout}">
+
+<head>
+    <title th:text="'Edit ' + ${bin.name}"></title>
+</head>
+
+<body>
+
+<h2 layout:fragment="pageTitle">Bin edit</h2>
+
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form th:action="@{'/bin/' + ${bin.id} + '/edit'}" th:object="${bin}" method="post">
+                <div class="form-group">
+                    <label for="name" class="control-label">Bin name</label>
+                    <input id="name" class="form-control" th:field="*{name}" />
+                    <p class="error-message"
+                       th:each="error : ${#fields.errors('name')}"
+                       th:text="${error}">Validation error
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                        <input id="active" type="checkbox" class="custom-control-input" th:field="*{active}" />
+                        <label for="active" class="custom-control-label">Active</label>
+                        <p class="error-message"
+                           th:each="error : ${#fields.errors('type')}"
+                           th:text="${error}">Validation error
+                        </p>
+                    </div>
+                </div>
+                <hr/>
+
+                <div class="form-group">
+
+                </div>
+
+                <hr/>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Edit bin</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

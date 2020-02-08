@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title layout:title-pattern="$CONTENT_TITLE">ResponseBin</title>
+    <object th:include="~{layouts/header :: head}" th:remove="tag" />
+</head>
+<body>
+
+<div class="row" style="height:50px;margin-top:10px">
+    <div class="col-md-9 offset-md-2">
+        <h2 layout:fragment="pageTitle"></h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-2" th:insert="~{layouts/header :: navigation}"></div>
+
+    <div class="col-md-9" layout:fragment="content">
+    </div>
+</div>
+
+<div th:insert="~{layouts/header :: footer}"></div>
+
+
+<div layout:fragment="scripts"></div>
+
+</body>
+</html>

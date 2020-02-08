@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorate="~{layouts/layout}">
+
+<head>
+    <title>
+        Create a ResponseBin
+    </title>
+</head>
+
+<body>
+
+<h2 layout:fragment="pageTitle">New Bin</h2>
+
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form th:action="@{/bin/create}" th:object="${bin}" method="post">
+                <div class="form-group">
+                    <label for="name" class="control-label">Bin name</label>
+                    <input id="name" class="form-control" th:field="*{name}" />
+                    <p class="error-message"
+                       th:each="error : ${#fields.errors('name')}"
+                       th:text="${error}">Validation error
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="type" class="control-label">Handle options</label>
+                    <select id="type" class="form-control custom-select custom-select-md" th:field="*{type}">
+                        <option value="params">Handle Form data requests</option>
+                        <option value="body">Handle Raw Body requests </option>
+                    </select>
+                    <p class="error-message"
+                       th:each="error : ${#fields.errors('type')}"
+                       th:text="${error}">Validation error
+                    </p>
+                </div>
+                <hr/>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Create bin</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

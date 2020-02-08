@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorate="~{layouts/layout}">
+<body>
+
+
+<h2 layout:fragment="pageTitle">Your bins</h2>
+
+<div layout:fragment="content">
+    <th:block th:each="bin : ${user.bins}">
+        <hr />
+        <div class="row">
+            <div class="col-md-2">
+                <p><a th:href="@{'/bin/' + ${bin.id} + '/edit'}" th:text="'Edit bin'"></a></p>
+                <p><a th:href="@{'/bin/' + ${bin.id} + '/view'}" th:text="'View bin'"></a></p>
+            </div>
+            <div class="col-md-6">
+                <p th:text="${bin.name}">bin name</p>
+                <p th:text="${bin.type == 'body'} ? 'Bin for Raw Body requests' : 'Bin for Form requests'">bin type</p>
+            </div>
+            <div class="col-md-3">
+                <p th:text="'Created at ' + ${#temporals.format(bin.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                <p th:with="binSize=${#lists.size(bin.requests)}">
+                    <span th:text="${binSize}"></span> <span th:text="${binSize == 1} ? ' request handled' : ' requests handled'"></span>
+                </p>
+            </div>
+        </div>
+        <hr />
+    </th:block>
+</div>
+
+</body>
+</html>

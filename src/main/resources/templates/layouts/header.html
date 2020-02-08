@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+</head>
+<body>
+
+<div th:fragment="navigation">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="col-md-2">
+            <div class="navbar-header">
+                <a
+                    class="navbar-brand navbar-toggle"
+                    href="#"
+                    data-toggle="collapse"
+                    data-target="#headerNavbar"
+                    aria-expanded="false"
+                    aria-controls="headerNavbar"
+                    aria-label="Toggle navigation"
+                >
+                    ResponseBin
+                </a>
+            </div>
+        </div>
+        <div class="collapse navbar-collapse" id="headerNavbar">
+            <ul class="navbar-nav mr-auto" style="margin-left:20px">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" href="/bin/list">My bins</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" href="/bin/create">Create bin</a>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link" href="/register">Register</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<div th:fragment="footer">
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+</div>
+</body>
+</html>

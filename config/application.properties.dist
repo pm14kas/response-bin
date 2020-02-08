@@ -1,0 +1,4 @@
+server.port = 1337
+spring.datasource.url=jdbc:postgresql://localhost:5432/responsebin
+spring.datasource.username=
+spring.datasource.password=
