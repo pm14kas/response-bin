@@ -25,7 +25,7 @@ data class Bin
     @OrderBy("createdAt DESC")
     var requests: List<Request> = listOf<Request>(),
 
-    @OneToMany(mappedBy = "bin", cascade = [CascadeType.ALL], fetch = FetchType.EAGER, orphanRemoval=true)
+    @OneToMany(mappedBy = "bin", cascade = [CascadeType.ALL], fetch = FetchType.EAGER, orphanRemoval = true)
     @OrderBy("priority ASC, id ASC")
     var responseTemplates: MutableList<ResponseTemplate> = mutableListOf<ResponseTemplate>(),
 

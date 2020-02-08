@@ -1,6 +1,5 @@
 package site.hitry.responsebin.controller
 
-import org.apache.logging.log4j.message.MapMessage.MapFormat.names
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
@@ -39,6 +38,7 @@ class BinController
     fun createBindingBin(): BinForm {
         return BinForm()
     }
+
     @ModelAttribute("template")
     fun createBindingResponseTemplate(): ResponseTemplateForm {
         return ResponseTemplateForm()
@@ -87,12 +87,12 @@ class BinController
 
     @GetMapping("/bin/create")
     fun binCreateAction(): ModelAndView {
-        var model = ModelAndView("binCreate");
-        var binForm = BinForm();
-        binForm.responseForms.add(ResponseTemplateForm());
-        model.addObject(binForm);
+        var model = ModelAndView("binCreate")
+        var binForm = BinForm()
+        binForm.responseForms.add(ResponseTemplateForm())
+        model.addObject(binForm)
 
-        return model;
+        return model
     }
 
     @PostMapping("/bin/create")
@@ -107,28 +107,28 @@ class BinController
             bindingResult.rejectValue("type", "type", "'type' field is empty")
         }
 
-        var defaultCount = 0;
-        var responseTemplateCounter = 0;
+        var defaultCount = 0
+        var responseTemplateCounter = 0
         for (responseTemplate in binForm.responseForms) {
             if (responseTemplate.default) {
-                defaultCount++;
+                defaultCount++
             }
 
-            val errorPath = "responseForms[$responseTemplateCounter]";
+            val errorPath = "responseForms[$responseTemplateCounter]"
             if (responseTemplate.condition.isEmpty() && !responseTemplate.default) {
-                bindingResult.rejectValue(errorPath, errorPath, "Either 'condition' or 'default' fields must be set");
+                bindingResult.rejectValue(errorPath, errorPath, "Either 'condition' or 'default' fields must be set")
             }
 
             if (responseTemplate.body.isEmpty()) {
-                bindingResult.rejectValue(errorPath, errorPath, "'body' field is empty");
+                bindingResult.rejectValue(errorPath, errorPath, "'body' field is empty")
             }
-            responseTemplateCounter++;
+            responseTemplateCounter++
         }
 
         if (defaultCount == 0) {
-            bindingResult.rejectValue("name", "name", "There must be a default response template");
+            bindingResult.rejectValue("name", "name", "There must be a default response template")
         } else if (defaultCount > 1) {
-            bindingResult.rejectValue("name", "name", "There must be only 1 default response template");
+            bindingResult.rejectValue("name", "name", "There must be only 1 default response template")
         }
 
         if (bindingResult.hasErrors()) {
@@ -183,18 +183,18 @@ class BinController
         }
 
         var model = ModelAndView("binEdit")
-        var binForm = BinForm();
-        binForm.id = bin.id;
-        binForm.name = bin.name;
-        binForm.active = bin.active;
+        var binForm = BinForm()
+        binForm.id = bin.id
+        binForm.name = bin.name
+        binForm.active = bin.active
         for (responseTemplate in bin.responseTemplates) {
-            var responseForm = ResponseTemplateForm();
-            responseForm.body = responseTemplate.body;
-            responseForm.condition = responseTemplate.condition;
-            responseForm.default = responseTemplate.isDefault;
-            responseForm.id = responseTemplate.id;
+            var responseForm = ResponseTemplateForm()
+            responseForm.body = responseTemplate.body
+            responseForm.condition = responseTemplate.condition
+            responseForm.default = responseTemplate.isDefault
+            responseForm.id = responseTemplate.id
 
-            binForm.responseForms.add(responseForm);
+            binForm.responseForms.add(responseForm)
         }
         model.addObject("bin", binForm)
 
@@ -228,28 +228,28 @@ class BinController
             throw ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found")
         }
 
-        var defaultCount = 0;
-        var responseFormCounter = 0;
+        var defaultCount = 0
+        var responseFormCounter = 0
         for (responseForm in binForm.responseForms) {
             if (responseForm.default) {
-                defaultCount++;
+                defaultCount++
             }
 
-            val errorPath = "responseForms[$responseFormCounter]";
+            val errorPath = "responseForms[$responseFormCounter]"
             if (responseForm.condition.isEmpty() && !responseForm.default) {
-                bindingResult.rejectValue(errorPath, errorPath, "Either 'condition' or 'default' fields must be set");
+                bindingResult.rejectValue(errorPath, errorPath, "Either 'condition' or 'default' fields must be set")
             }
 
             if (responseForm.body.isEmpty()) {
-                bindingResult.rejectValue(errorPath, errorPath, "'body' field is empty");
+                bindingResult.rejectValue(errorPath, errorPath, "'body' field is empty")
             }
-            responseFormCounter++;
+            responseFormCounter++
         }
 
         if (defaultCount == 0) {
-            bindingResult.rejectValue("name", "name", "There must be a default response template");
+            bindingResult.rejectValue("name", "name", "There must be a default response template")
         } else if (defaultCount > 1) {
-            bindingResult.rejectValue("name", "name", "There must be only 1 default response template");
+            bindingResult.rejectValue("name", "name", "There must be only 1 default response template")
         }
 
         if (bindingResult.hasErrors()) {
@@ -264,52 +264,52 @@ class BinController
         binService.save(bin)
 
         for (responseForm in binForm.responseForms) {
-            var isFound = false;
+            var isFound = false
 
             for (responseTemplate in bin.responseTemplates) {
                 if (responseForm.id == responseTemplate.id) {
-                    responseTemplate.condition = responseForm.condition;
-                    responseTemplate.body = responseForm.body;
-                    responseTemplate.isDefault = responseForm.default;
+                    responseTemplate.condition = responseForm.condition
+                    responseTemplate.body = responseForm.body
+                    responseTemplate.isDefault = responseForm.default
 
-                    responseRepository.save(responseTemplate);
-                    isFound = true;
-                    break;
+                    responseRepository.save(responseTemplate)
+                    isFound = true
+                    break
                 }
             }
 
             if (!isFound) {
-                var responseTemplate = ResponseTemplate();
-                responseTemplate.condition = responseForm.condition;
-                responseTemplate.body = responseForm.body;
-                responseTemplate.isDefault = responseForm.default;
-                responseTemplate.bin = bin;
+                var responseTemplate = ResponseTemplate()
+                responseTemplate.condition = responseForm.condition
+                responseTemplate.body = responseForm.body
+                responseTemplate.isDefault = responseForm.default
+                responseTemplate.bin = bin
 
-                responseRepository.save(responseTemplate);
+                responseRepository.save(responseTemplate)
             }
         }
 
-        println(bin.responseTemplates.size);
+        println(bin.responseTemplates.size)
         val responseTemplateIterator = bin.responseTemplates.iterator()
         while (responseTemplateIterator.hasNext()) {
-            var isFound = false;
+            var isFound = false
 
             var responseTemplate = responseTemplateIterator.next()
 
             for (responseForm in binForm.responseForms) {
                 if (responseForm.id == responseTemplate.id) {
-                    isFound = true;
-                    break;
+                    isFound = true
+                    break
                 }
             }
 
             if (!isFound) {
-                responseRepository.delete(responseTemplate);
-                responseTemplateIterator.remove();
-                binService.save(bin);
+                responseRepository.delete(responseTemplate)
+                responseTemplateIterator.remove()
+                binService.save(bin)
             }
         }
-        println(bin.responseTemplates.size);
+        println(bin.responseTemplates.size)
 
         return ModelAndView("redirect:/bin/list")
     }

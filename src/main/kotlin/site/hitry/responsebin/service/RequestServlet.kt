@@ -139,8 +139,8 @@ class RequestServlet
             for (responseTemplate in bin.responseTemplates) {
                 //default response should be returned in case other responses have failed
                 if (!responseTemplate.isDefault && parser.parse(responseTemplate.condition)) {
-                    request.commentary = null;
-                    request.response = responseTemplate.body;
+                    request.commentary = null
+                    request.response = responseTemplate.body
 
                     return responseTemplate.body
                 }
@@ -158,7 +158,7 @@ class RequestServlet
             request.commentary = "Response template missing; falling back to generic response"
         }
 
-        request.response = response;
+        request.response = response
 
         return response
     }

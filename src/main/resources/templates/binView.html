@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorate="~{layouts/layout}">
+<html lang="ru" layout:decorate="~{layouts/layout}" xmlns:layout="http://www.thymeleaf.org"
+      xmlns:th="http://www.thymeleaf.org">
 <body>
 
 <h2 layout:fragment="pageTitle">Last 10 requests to your bin</h2>
 
 <div layout:fragment="content">
-    <p><a th:text="'Url to request: /bin/request/' + ${bin.id} + '/'" th:href="'/bin/request/' + ${bin.id} + '/'"></a></p>
+    <p><a th:href="'/bin/request/' + ${bin.id} + '/'" th:text="'Url to request: /bin/request/' + ${bin.id} + '/'"></a>
+    </p>
     <th:block th:each="request : ${requests}">
-        <hr />
+        <hr/>
         <div class="row">
             <div class="col-md-2">
                 <p>Method: <b th:text="${request.method}"></b></p>
@@ -16,12 +18,12 @@
             <div class="col-md-8">
                 <p>
                     <button
-                            type="button"
+                            aria-expanded="false"
                             class="btn btn-primary"
                             data-toggle="collapse"
-                            th:data-target="'#collapseHeader' + ${request.id}"
-                            aria-expanded="false"
                             th:aria-controls="'collapseHeader' + ${request.id}"
+                            th:data-target="'#collapseHeader' + ${request.id}"
+                            type="button"
                     >
                         Show headers
                     </button>
@@ -32,43 +34,45 @@
 
                 <p>
                     <button
-                            type="button"
+                            aria-expanded="false"
                             class="btn btn-primary"
                             data-toggle="collapse"
-                            th:data-target="'#collapseBody' + ${request.id}"
-                            aria-expanded="false"
                             th:aria-controls="'collapseBody' + ${request.id}"
+                            th:data-target="'#collapseBody' + ${request.id}"
                             th:text="${bin.type == 'body' ? 'Show raw body' : 'Show parameters'}"
+                            type="button"
                     >
                         Show request
                     </button>
                 </p>
                 <div class="collapse" th:id="'collapseBody' + ${request.id}">
-                    <p style="white-space: pre-wrap" th:text="${request.body}" th:class="${bin.type == 'body' ? '' : 'json-container'}"></p>
+                    <p style="white-space: pre-wrap" th:class="${bin.type == 'body' ? '' : 'json-container'}"
+                       th:text="${request.body}"></p>
                 </div>
 
                 <p>
                     <button
-                            type="button"
+                            aria-expanded="false"
                             class="btn btn-primary"
                             data-toggle="collapse"
-                            th:data-target="'#collapseResponse' + ${request.id}"
-                            aria-expanded="false"
                             th:aria-controls="'collapseResponse' + ${request.id}"
+                            th:data-target="'#collapseResponse' + ${request.id}"
+                            type="button"
                     >
                         Show response
                     </button>
                 </p>
                 <div class="collapse" th:id="'collapseResponse' + ${request.id}">
-                    <p th:if="${null != request.commentary}"><b>Commentary to response: </b><i th:text="${request.commentary}"></i></p>
-                    <p style="white-space: pre-wrap" th:text="${request.response}" class="json-container"></p>
+                    <p th:if="${null != request.commentary}"><b>Commentary to response: </b><i
+                            th:text="${request.commentary}"></i></p>
+                    <p class="json-container" style="white-space: pre-wrap" th:text="${request.response}"></p>
                 </div>
             </div>
             <div class="col-md-2">
                 <p th:text="'Created at ' + ${#temporals.format(request.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></p>
             </div>
         </div>
-        <hr />
+        <hr/>
     </th:block>
 </div>
 
@@ -93,6 +97,7 @@
                 }
             })
         });
+
     </script>
 </div>
 </body>

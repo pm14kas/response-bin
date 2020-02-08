@@ -1,7 +1,6 @@
 package site.hitry.responsebin.service
 
 import com.google.gson.JsonElement
-import java.lang.NullPointerException
 import java.text.ParseException
 
 class ExpressionParser(

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorate="~{layouts/layout}">
+<html lang="ru" layout:decorate="~{layouts/layout}" xmlns:layout="http://www.thymeleaf.org"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>
@@ -14,23 +15,23 @@
 <div layout:fragment="content">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <form th:action="@{/bin/create}" method="post">
+            <form method="post" th:action="@{/bin/create}">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-success float-right">Save bin</button>
+                    <button class="btn btn-success float-right" type="submit">Save bin</button>
                 </div>
                 <div class="form-group">
-                    <label for="name" class="control-label">Bin name</label>
-                    <input id="name" class="form-control" th:field="*{bin.name}" />
+                    <label class="control-label" for="name">Bin name</label>
+                    <input class="form-control" id="name" th:field="*{bin.name}"/>
                     <p class="error-message"
                        th:each="error : ${#fields.errors('bin.name')}"
                        th:text="${error}">Validation error
                     </p>
                 </div>
                 <div class="form-group">
-                    <label for="type" class="control-label">Handle options</label>
-                    <select id="type" class="form-control custom-select custom-select-md" th:field="*{bin.type}">
+                    <label class="control-label" for="type">Handle options</label>
+                    <select class="form-control custom-select custom-select-md" id="type" th:field="*{bin.type}">
                         <option value="params">Handle Form data requests</option>
-                        <option value="body">Handle Raw Body requests </option>
+                        <option value="body">Handle Raw Body requests</option>
                     </select>
                     <p class="error-message"
                        th:each="error : ${#fields.errors('bin.type')}"
@@ -44,35 +45,42 @@
                     <th:block th:each="template, status : ${bin.responseForms}">
                         <div class="bg-light">
                             <hr/>
-                                <button type="button" class="btn btn-danger float-right removeResponseTemplate">Remove template</button>
-                                <p class="error-message"
-                                   th:each="error : ${#fields.errors('bin.responseForms[__${status.index}__]')}"
-                                   th:text="${error}">Validation error
-                                </p>
-                                <input hidden th:field="*{bin.responseForms[__${status.index}__].id}"/>
+                            <button class="btn btn-danger float-right removeResponseTemplate" type="button">Remove
+                                template
+                            </button>
+                            <p class="error-message"
+                               th:each="error : ${#fields.errors('bin.responseForms[__${status.index}__]')}"
+                               th:text="${error}">Validation error
+                            </p>
+                            <input hidden th:field="*{bin.responseForms[__${status.index}__].id}"/>
 
-                                <div class="form-group">
-                                    <label th:for="'responseCondition' + ${status.index}" class="control-label">Response condition</label>
-                                    <input th:id="'responseCondition' + ${status.index}" class="form-control" th:field="*{bin.responseForms[__${status.index}__].condition}">
-                                </div>
+                            <div class="form-group">
+                                <label class="control-label" th:for="'responseCondition' + ${status.index}">Response
+                                    condition</label>
+                                <input class="form-control" th:field="*{bin.responseForms[__${status.index}__].condition}"
+                                       th:id="'responseCondition' + ${status.index}">
+                            </div>
 
-                                <div class="form-group">
-                                    <label th:for="'responseBody' + ${status.index}" class="control-label">Response body</label>
-                                    <textarea th:id="'responseBody' + ${status.index}" class="form-control" th:field="*{bin.responseForms[__${status.index}__].body}"></textarea>
-                                </div>
+                            <div class="form-group">
+                                <label class="control-label" th:for="'responseBody' + ${status.index}">Response
+                                    body</label>
+                                <textarea class="form-control" th:field="*{bin.responseForms[__${status.index}__].body}"
+                                          th:id="'responseBody' + ${status.index}"></textarea>
+                            </div>
 
-                                <div class="form-group">
-                                    <div class="custom-control custom-checkbox">
-                                        <input th:id="'responseDefault' + ${status.index}" type="checkbox" class="custom-control-input" th:field="*{bin.responseForms[__${status.index}__].default}" />
-                                        <label th:for="'responseDefault' + ${status.index}" class="custom-control-label">Set as default</label>
-                                    </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" th:field="*{bin.responseForms[__${status.index}__].default}"
+                                           th:id="'responseDefault' + ${status.index}"
+                                           type="checkbox"/>
+                                    <label class="custom-control-label" th:for="'responseDefault' + ${status.index}">Set
+                                        as default</label>
                                 </div>
+                            </div>
                             <hr/>
                         </div>
                     </th:block>
                     <button
-                            id="addResponseTemplate"
-                            type="button"
                             class="btn btn-info"
                             data-prototype='
                                 <div class="bg-light">
@@ -100,6 +108,8 @@
                                     <hr>
                                 </div>
                             '
+                            id="addResponseTemplate"
+                            type="button"
                     >
                         Add response template
                     </button>
@@ -128,6 +138,7 @@
                 $(this).closest('div.bg-light').remove();
             });
         });
+
     </script>
 </div>
 </body>

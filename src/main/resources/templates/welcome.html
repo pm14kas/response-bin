@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorate="~{layouts/layout}">
+<html lang="ru" layout:decorate="~{layouts/layout}"
+      xmlns:layout="http://www.thymeleaf.org">
 <body>
 
 
@@ -7,8 +8,8 @@
 
 <div layout:fragment="content">
     <div sec:authorize="isAuthenticated()">
-        <form id="logoutForm" method="POST" action="/logout">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <form action="/logout" id="logoutForm" method="POST">
+            <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
         </form>
 
         <h2>Welcome, <span sec:authentication="name"></span> | <a href="/logout">Logout</a></h2>

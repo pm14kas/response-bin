@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class ResponsebinApplication
 
 fun main(args: Array<String>) {
-	runApplication<ResponsebinApplication>(*args)
+    runApplication<ResponsebinApplication>(*args)
 }

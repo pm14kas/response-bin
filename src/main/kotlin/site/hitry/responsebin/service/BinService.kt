@@ -29,12 +29,12 @@ class BinService
         binRepository.save(bin)
 
         for (responseForm in binForm.responseForms) {
-            var rt = ResponseTemplate();
-            rt.bin = bin;
-            rt.isDefault = responseForm.default;
-            rt.condition = responseForm.condition;
-            rt.body = responseForm.body;
-            responseTemplateRepository.save(rt);
+            var rt = ResponseTemplate()
+            rt.bin = bin
+            rt.isDefault = responseForm.default
+            rt.condition = responseForm.condition
+            rt.body = responseForm.body
+            responseTemplateRepository.save(rt)
         }
 
     }

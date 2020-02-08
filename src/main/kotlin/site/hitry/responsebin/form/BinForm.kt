@@ -12,7 +12,7 @@ class BinForm {
     @NotEmpty
     var active: Boolean? = true
     @NotEmpty
-    var responseForms: MutableList<ResponseTemplateForm> = mutableListOf();
+    var responseForms: MutableList<ResponseTemplateForm> = mutableListOf()
 
     companion object {
         const val BIN_TYPE_BODY: String = "body"

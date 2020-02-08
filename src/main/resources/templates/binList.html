@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorate="~{layouts/layout}">
+<html lang="ru" layout:decorate="~{layouts/layout}" xmlns:layout="http://www.thymeleaf.org"
+      xmlns:th="http://www.thymeleaf.org">
 <body>
 
 
@@ -7,7 +8,7 @@
 
 <div layout:fragment="content">
     <th:block th:each="bin : ${user.bins}">
-        <hr />
+        <hr/>
         <div class="row">
             <div class="col-md-2">
                 <p><a th:href="@{'/bin/' + ${bin.id} + '/edit'}" th:text="'Edit bin'"></a></p>
@@ -20,11 +21,12 @@
             <div class="col-md-3">
                 <p th:text="'Created at ' + ${#temporals.format(bin.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></p>
                 <p th:with="binSize=${#lists.size(bin.requests)}">
-                    <span th:text="${binSize}"></span> <span th:text="${binSize == 1} ? ' request handled' : ' requests handled'"></span>
+                    <span th:text="${binSize}"></span> <span
+                        th:text="${binSize == 1} ? ' request handled' : ' requests handled'"></span>
                 </p>
             </div>
         </div>
-        <hr />
+        <hr/>
     </th:block>
 </div>
 
