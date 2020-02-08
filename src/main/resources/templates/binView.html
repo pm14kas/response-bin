@@ -46,6 +46,23 @@
                 <div class="collapse" th:id="'collapseBody' + ${request.id}">
                     <p style="white-space: pre-wrap" th:text="${request.body}" th:class="${bin.type == 'body' ? '' : 'json-container'}"></p>
                 </div>
+
+                <p>
+                    <button
+                            type="button"
+                            class="btn btn-primary"
+                            data-toggle="collapse"
+                            th:data-target="'#collapseResponse' + ${request.id}"
+                            aria-expanded="false"
+                            th:aria-controls="'collapseResponse' + ${request.id}"
+                    >
+                        Show response
+                    </button>
+                </p>
+                <div class="collapse" th:id="'collapseResponse' + ${request.id}">
+                    <p th:if="${null != request.commentary}"><b>Commentary to response: </b><i th:text="${request.commentary}"></i></p>
+                    <p style="white-space: pre-wrap" th:text="${request.response}" class="json-container"></p>
+                </div>
             </div>
             <div class="col-md-2">
                 <p th:text="'Created at ' + ${#temporals.format(request.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></p>

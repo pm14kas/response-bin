@@ -7,40 +7,51 @@ import javax.persistence.*
 @Table(name = "rb_bins")
 data class Bin
 (
-        @Id
-        @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bin_id_sequence")
-        @SequenceGenerator(
-                name = "bin_id_sequence",
-                sequenceName = "bin_id_sequence",
-                allocationSize = 1
-        )
-        @Column(name = "id", nullable = false, unique = true, updatable = false)
-        var id: Long = 0,
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bin_id_sequence")
+    @SequenceGenerator(
+        name = "bin_id_sequence",
+        sequenceName = "bin_id_sequence",
+        allocationSize = 1
+    )
+    @Column(name = "id", nullable = false, unique = true, updatable = false)
+    var id: Long = 0,
 
-        @ManyToOne
-        @JoinColumn(name = "user_id", nullable = false, updatable = false)
-        var user: User = User(),
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false, updatable = false)
+    var user: User = User(),
 
-        @OneToMany(mappedBy = "bin", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-        @OrderBy("createdAt DESC")
-        var requests: List<Request> = listOf<Request>(),
+    @OneToMany(mappedBy = "bin", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @OrderBy("createdAt DESC")
+    var requests: List<Request> = listOf<Request>(),
 
-        @OneToMany(mappedBy = "bin", cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
-        @OrderBy("priority ASC, id ASC")
-        var responseTemplates: List<ResponseTemplate> = listOf<ResponseTemplate>(),
+    @OneToMany(mappedBy = "bin", cascade = [CascadeType.ALL], fetch = FetchType.EAGER, orphanRemoval=true)
+    @OrderBy("priority ASC, id ASC")
+    var responseTemplates: MutableList<ResponseTemplate> = mutableListOf<ResponseTemplate>(),
 
-        @Column(name = "name", nullable = false)
-        var name: String = String(),
+    @Column(name = "name", nullable = false)
+    var name: String = String(),
 
-        @Column(name = "type", nullable = false)
-        var type: String = "temp",
+    @Column(name = "type", nullable = false)
+    var type: String = "temp",
 
-        @Column(name = "active", nullable = false)
-        var active: Boolean = true,
+    @Column(name = "active", nullable = false)
+    var active: Boolean = true,
 
-        @Column(name = "created_at")
-        var createdAt: LocalDateTime = LocalDateTime.now(),
+    @Column(name = "created_at")
+    var createdAt: LocalDateTime = LocalDateTime.now(),
 
-        @Column(name = "updated_at")
-        var updatedAt: LocalDateTime = LocalDateTime.now()
-)
+    @Column(name = "updated_at")
+    var updatedAt: LocalDateTime = LocalDateTime.now()
+) {
+    fun getDefaultResponseTemplate(): ResponseTemplate? {
+        for (responseTemplate in this.responseTemplates) {
+            //default response should be returned in case other responses have failed
+            if (responseTemplate.isDefault) {
+                return responseTemplate
+            }
+        }
+
+        return null
+    }
+}

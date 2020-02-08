@@ -11,13 +11,12 @@ import site.hitry.responsebin.service.UserLoginDetailsService
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig (
-    var userDetailsService : UserLoginDetailsService
+class SecurityConfig(
+    var userDetailsService: UserLoginDetailsService
 ) : WebSecurityConfigurerAdapter() {
     @Bean
-    public fun passwordEncoder() : BCryptPasswordEncoder
-    {
-        return BCryptPasswordEncoder();
+    fun passwordEncoder(): BCryptPasswordEncoder {
+        return BCryptPasswordEncoder()
     }
 
     @Throws(Exception::class)
@@ -25,24 +24,21 @@ class SecurityConfig (
         http
             .authorizeRequests()
             .antMatchers("/resources/**", "/registration", "/register", "/", "/css/**", "/js/**", "/bin/request/**")
-                .permitAll()
+            .permitAll()
             .anyRequest()
-                .authenticated()
+            .authenticated()
             .and()
             .formLogin()
-                .loginPage("/login"
-                ).permitAll()
+            .loginPage("/login"
+            ).permitAll()
             .and()
             .logout()
-                .invalidateHttpSession(true)
-                .clearAuthentication(true)
-                .logoutRequestMatcher(AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login?logout")
-                .permitAll()
-            .and().
-                cors()
-            .and().
-                csrf().disable()
-        ;
+            .invalidateHttpSession(true)
+            .clearAuthentication(true)
+            .logoutRequestMatcher(AntPathRequestMatcher("/logout"))
+            .logoutSuccessUrl("/login?logout")
+            .permitAll()
+            .and().cors()
+            .and().csrf().disable()
     }
 }

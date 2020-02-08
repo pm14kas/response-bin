@@ -6,16 +6,20 @@
 </head>
 <body>
 
-<div class="row" style="height:50px;margin-top:10px">
-    <div class="col-md-9 offset-md-2">
-        <h2 layout:fragment="pageTitle"></h2>
-    </div>
+<div class="row" style="height:20px;margin-top:10px">
 </div>
 
 <div class="row">
     <div class="col-md-2" th:insert="~{layouts/header :: navigation}"></div>
 
-    <div class="col-md-9" layout:fragment="content">
+    <div class="col-md-9">
+        <div class="row" style="height:40px;margin-top:10px">
+            <div>
+                <h2 layout:fragment="pageTitle"></h2>
+            </div>
+        </div>
+        <div layout:fragment="content">
+        </div>
     </div>
 </div>
 

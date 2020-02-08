@@ -12,40 +12,121 @@
 <div layout:fragment="content">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <form th:action="@{'/bin/' + ${bin.id} + '/edit'}" th:object="${bin}" method="post">
+            <form th:action="@{'/bin/' + ${bin.id} + '/edit'}" method="post">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success float-right">Save bin</button>
+                </div>
                 <div class="form-group">
                     <label for="name" class="control-label">Bin name</label>
-                    <input id="name" class="form-control" th:field="*{name}" />
+                    <input id="name" class="form-control" th:field="*{bin.name}" />
                     <p class="error-message"
-                       th:each="error : ${#fields.errors('name')}"
+                       th:each="error : ${#fields.errors('bin.name')}"
                        th:text="${error}">Validation error
                     </p>
                 </div>
 
                 <div class="form-group">
                     <div class="custom-control custom-checkbox">
-                        <input id="active" type="checkbox" class="custom-control-input" th:field="*{active}" />
+                        <input id="active" type="checkbox" class="custom-control-input" th:field="*{bin.active}" />
                         <label for="active" class="custom-control-label">Active</label>
                         <p class="error-message"
-                           th:each="error : ${#fields.errors('type')}"
+                           th:each="error : ${#fields.errors('bin.active')}"
                            th:text="${error}">Validation error
                         </p>
                     </div>
                 </div>
                 <hr/>
 
-                <div class="form-group">
+                <div id="responseTemplateContainer">
 
+                    <th:block th:each="template, status : ${bin.responseForms}">
+                        <div class="bg-light">
+                            <hr/>
+                            <button type="button" class="btn btn-danger float-right removeResponseTemplate">Remove template</button>
+                            <p class="error-message"
+                               th:each="error : ${#fields.errors('bin.responseForms[__${status.index}__]')}"
+                               th:text="${error}">Validation error
+                            </p>
+                            <input hidden th:field="*{bin.responseForms[__${status.index}__].id}"/>
+
+                            <div class="form-group">
+                                <label th:for="'responseCondition' + ${status.index}" class="control-label">Response condition</label>
+                                <input th:id="'responseCondition' + ${status.index}" class="form-control" th:field="*{bin.responseForms[__${status.index}__].condition}">
+                            </div>
+
+                            <div class="form-group">
+                                <label th:for="'responseBody' + ${status.index}" class="control-label">Response body</label>
+                                <textarea th:id="'responseBody' + ${status.index}" class="form-control" th:field="*{bin.responseForms[__${status.index}__].body}"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input th:id="'responseDefault' + ${status.index}" type="checkbox" class="custom-control-input" th:field="*{bin.responseForms[__${status.index}__].default}" />
+                                    <label th:for="'responseDefault' + ${status.index}" class="custom-control-label">Set as default</label>
+                                </div>
+                            </div>
+                            <hr/>
+                        </div>
+                    </th:block>
+                    <button
+                            id="addResponseTemplate"
+                            type="button"
+                            class="btn btn-info"
+                            data-prototype='
+                                <div class="bg-light">
+                                    <hr>
+                                        <button type="button" class="btn btn-danger float-right removeResponseTemplate">Remove template</button>
+
+                                        <input hidden="" id="responseForms__COUNT__.id" name="responseForms[__COUNT__].id" value="">
+
+                                        <div class="form-group">
+                                            <label for="responseCondition__COUNT__" class="control-label">Response condition</label>
+                                            <input id="responseCondition__COUNT__" class="form-control" name="responseForms[__COUNT__].condition" value="">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="responseBody__COUNT__" class="control-label">Response body</label>
+                                            <textarea id="responseBody__COUNT__" class="form-control" name="responseForms[__COUNT__].body" value=""></textarea>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox">
+                                                <input id="responseDefault__COUNT__" type="checkbox" class="custom-control-input" name="responseForms[__COUNT__].default" value="true"><input type="hidden" name="_responseForms[__COUNT__].default" value="on">
+                                                <label for="responseDefault__COUNT__" class="custom-control-label">Set as default</label>
+                                            </div>
+                                        </div>
+                                    <hr>
+                                </div>
+                            '
+                    >
+                        Add response template
+                    </button>
                 </div>
 
                 <hr/>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-success">Edit bin</button>
-                </div>
             </form>
         </div>
     </div>
 </div>
 
+<div layout:fragment="scripts">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var container = $('#responseTemplateContainer');
+            $('#addResponseTemplate').data('count', container.children('div.bg-light').length);
+
+            $('#addResponseTemplate').on('click', function() {
+                var container = $('#responseTemplateContainer');
+                var template = $(this).data('prototype').replace(/__COUNT__/g, $(this).data('count'));
+                $(template).insertBefore($(this));
+                $(this).data('count', $(this).data('count') + 1)
+            });
+
+            container.on('click', 'button.btn.btn-danger.removeResponseTemplate', function() {
+                $(this).closest('div.bg-light').remove();
+            });
+        });
+    </script>
+</div>
 </body>
 </html>
