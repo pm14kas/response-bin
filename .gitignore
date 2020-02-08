@@ -6,6 +6,8 @@ target/
 
 ### Config file ###
 src/application.properties
+/src/application.properties
+*/application.properties
 
 ### STS ###
 .apt_generated
@@ -33,6 +35,9 @@ build/
 ### VS Code ###
 .vscode/
 
+### Maven ###
+/.mvn/
+/.mvn/*
 
 # Compiled class file
 *.class
